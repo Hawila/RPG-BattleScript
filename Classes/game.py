@@ -61,7 +61,28 @@ warrior(warrior trained in the art of defensive techniques) -> defense Formation
   
 '''
 class charClasses:
+    """
+    Main character class used to intilize character type (Mage,warrior,healer or archer)
+    """
     def __init__(self,skills,HitPoints,manaPoints,attackPoints,defPoints,type,crticalHit):
+        """
+        Parameters
+        -----
+        list : skills
+             cuurent class skills 
+        int : HitPoints
+             max health points
+        int : manaPoints 
+             max mana points
+        int : attackPoints
+             intial attack
+        int : defPoints
+             intial defense points
+        str : type
+             character class or type(mage.archer,etc)
+        int : crticalHit
+             crtical hit percent          
+        """
         self.skills = skills
         self.maxhp = HitPoints
         self.currentHitPoints = HitPoints
