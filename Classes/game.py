@@ -62,7 +62,7 @@ warrior(warrior trained in the art of defensive techniques) -> defense Formation
 '''
 class charClasses:
     """
-    Main character class used to intilize character type (Mage,warrior,healer or archer)
+    Main character class used to intilize character and enemies type (Mage,warrior,healer or archer)
     """
     def __init__(self,skills,HitPoints,manaPoints,attackPoints,defPoints,type,crticalHit):
         """
@@ -89,7 +89,8 @@ class charClasses:
         self.maxmp = manaPoints
         self.currentManaPoints = manaPoints
         self.lowattack = attackPoints
-        self.maxattackk = attackPoints + (random.randrange(50,100) * (attackPoints / 100) +  crticalHit)
+       # self.maxattackk = attackPoints + (random.randrange(50,100) * (attackPoints / 100) +  crticalHit)
+        self.maxattackk = attackPoints + 20
         self.defpoints = defPoints
         self.type = type
         self.action = ["Action","Magic"]
