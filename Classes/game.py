@@ -93,7 +93,7 @@ class charClasses:
         self.maxattackk = attackPoints + 20
         self.defpoints = defPoints
         self.type = type
-        self.action = ["Action","Magic"]
+        self.action = ["Action","sKills|Magic"]
 
     def generateRandomDamage(self):
         return random.randrange(self.lowattack,self.maxattackk)
