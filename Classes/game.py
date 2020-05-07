@@ -96,3 +96,43 @@ class charClasses:
 
     def generateRandomDamage(self):
         return random.randrange(self.lowattack,self.maxattackk)
+
+    def generateRandomSkillDamage(self,i):
+         return random.randrange(self.skills[i]["Damage"]-10,self.skills[i]["Damage"]+10)
+
+    def takeDamage(self,dmg):
+          self.currentHitPoints -= dmg  
+          if self.currentHitPoints<0:
+               self.currentHitPoints = 0
+          return self.currentHitPoints
+    
+    def reduce_mana(self,cost):
+         self.currentManaPoints -= cost 
+
+    def get_hp(self):
+         return self.currentHitPoints
+    def getMaxHp(self):
+         return self.maxhp 
+    def get_cmana(self):
+         return self.currentManaPoints     
+    def getMaxMana(self): 
+         return self.maxmp
+
+    def getSkillName(self,i):
+         return self.skills[i]["name"]   
+    def getSkillMPCost(self,i):
+         return self.skills[i]["cost"]
+
+    def Choice(self):
+         i = 1
+         print("Actions")
+         for item in self.action:
+              print(i,"-" +item)
+              i += 1
+
+    def choose_skill(self):
+         i=1
+         print("skills")
+         for skill in self.skills:
+              print(str(i) + ":",skill["name"],"Cost : ",skill["cost"])
+              i += 1 
