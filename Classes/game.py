@@ -1,5 +1,6 @@
 # blender build scripts
 import random
+from .skills import skill
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -98,9 +99,7 @@ class charClasses:
     def generateRandomDamage(self):
         return random.randrange(self.lowattack,self.maxattackk)
 
-    def generateRandomSkillDamage(self,i):
-         return random.randrange(self.skills[i]["Damage"]-10,self.skills[i]["Damage"]+10)
-
+    
     def takeDamage(self,dmg):
           self.currentHitPoints -= dmg  
           if self.currentHitPoints<0:
@@ -119,11 +118,7 @@ class charClasses:
     def getMaxMana(self): 
          return self.maxmp
 
-    def getSkillName(self,i):
-         return self.skills[i]["name"]   
-    def getSkillMPCost(self,i):
-         return self.skills[i]["cost"]
-
+  
     def Choice(self):
          i = 1
          print("Actions")
@@ -133,7 +128,7 @@ class charClasses:
 
     def choose_skill(self):
          i=1
-         print("skills")
+         print("Skills")
          for skill in self.skills:
-              print(str(i) + ":",skill["name"],"Cost : ",skill["cost"])
+              print(str(i) + ":",skill.name,"Cost : ",skill.cost)
               i += 1 

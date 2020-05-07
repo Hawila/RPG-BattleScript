@@ -1,13 +1,22 @@
 from Classes.game import charClasses,allColors,bcolors
+from Classes.skills import skill
 import  random
+# Mage Skills 
+Fireball = skill("FireBall",15,45,"spell")
+LightningBolt = skill("LightningBolt",25,random.randrange(50,90),"spell")
+ThunderStorm = skill("ThunderStorm",50,150,"spell")
+#Healer Skill
+cure = skill("cure",20,70,"spell")
+cura = skill("cura",50,120,"spell")
+Divine = skill("Divine",100,250,"spell")
+#Enemy Skill
+Cursing = skill("Cursing",15,45,"spell")
+Torment = skill("Torment",2,90,"spell")
+Jinx = skill("Jinx",50,150,"spell")
 
-MageSpells = [{"name": "FireBall","cost":15,"Damage":45},
-              {"name" : "LightningBolt","cost":25,"Damage":random.randrange(50,99)},
-              {"name": "ThunderStorm","cost":50,"Damage":150}]
-
-EnemySpells = [{"name": "Cursing","cost":15,"Damage":45},
-              {"name" : "Torment","cost":25,"Damage":random.randrange(50,99)},
-              {"name": "Jinx","cost":50,"Damage":150}]
+MageSpells = [Fireball,LightningBolt,ThunderStorm]
+HealerSpell = [cure,cura,Divine]
+EnemySpells = [Cursing,Torment,Jinx]
 
 Slime = charClasses(EnemySpells,150,90,40,10,"Slime",0)
 Goblin = charClasses(EnemySpells,300,110,60,20,"Goblin",0)
@@ -44,14 +53,16 @@ while one:
         if skill_index > 2 :
             print(bcolors.FAIL + bcolors.BOLD+"Invaild Choice"+bcolors.ENDC)
             continue
+
         Player_mana = Player.get_cmana()
-        if Player.getSkillMPCost(skill_index) > Player_mana:
+        if Player.skills[skill_index].cost > Player_mana:
             print(bcolors.FAIL + bcolors.BOLD +"You Dont Have Mana"+bcolors.ENDC)
             continue
-        Player.reduce_mana(Player.getSkillMPCost(skill_index))
-        magic_dmg = Player.generateRandomSkillDamage(skill_index)
+
+        Player.reduce_mana(Player.skills[skill_index].cost)
+        magic_dmg = Player.skills[skill_index].generateRandomDamage()
         Zombie.takeDamage(magic_dmg)
-        print("You Delt",magic_dmg," Damage To",Zombie.type,"with",Player.skills[int(choice)-1]["name"],"And it cost: ",Player.getSkillMPCost(skill_index),"Your Current Mana: ",Player.get_cmana())
+        print("You Delt",magic_dmg," Damage To",Zombie.type,"with",Player.skills[int(choice)-1].name,"And it cost: ",Player.skills[skill_index].cost,"Your Current Mana: ",Player.get_cmana())
 
     
     enemy_choice=1
