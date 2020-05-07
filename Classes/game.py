@@ -1,6 +1,7 @@
 # blender build scripts
 import random
-from .skills import skill
+from Classes.skills import skill
+from Classes.inventory import item
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -65,7 +66,7 @@ class charClasses:
     """
     Main character class used to intilize character and enemies type (Mage,warrior,healer or archer)
     """
-    def __init__(self,skills,HitPoints,manaPoints,attackPoints,defPoints,type,crticalHit):
+    def __init__(self,skills,HitPoints,manaPoints,attackPoints,defPoints,type,crticalHit,items):
         """
         Parameters
         -----
@@ -94,7 +95,8 @@ class charClasses:
         self.maxattackk = attackPoints + 20
         self.defpoints = defPoints
         self.type = type
-        self.action = ["Action","sKills|Magic"]
+        self.items=items
+        self.action = ["Action","sKills|Magic","Items"]
 
     def generateRandomDamage(self):
         return random.randrange(self.lowattack,self.maxattackk)
@@ -105,7 +107,12 @@ class charClasses:
           if self.currentHitPoints<0:
                self.currentHitPoints = 0
           return self.currentHitPoints
-    
+
+    def addMana(self,value):
+         self.currentManaPoints+=value
+         if self.currentManaPoints > self.maxmp:
+              self.currentManaPoints = self.maxmp
+
     def reduce_mana(self,cost):
          self.currentManaPoints -= cost 
 
@@ -118,17 +125,34 @@ class charClasses:
     def getMaxMana(self): 
          return self.maxmp
 
+    def addattack(self,attp):
+         self.lowattack += (attp/2)
+         self.maxattackk+=attp 
+
+    def heal(self,hp):
+         self.currentHitPoints+=hp
+         if self.currentHitPoints>self.maxhp:
+              self.currentHitPoints = self.maxhp 
   
     def Choice(self):
          i = 1
-         print("Actions")
+         print(bcolors.OKGREEN +"Actions"+bcolors.ENDC)
          for item in self.action:
               print(i,"-" +item)
               i += 1
 
     def choose_skill(self):
          i=1
-         print("Skills")
+         print(bcolors.OKGREEN +"Skills"+bcolors.ENDC)
          for skill in self.skills:
-              print(str(i) + ":",skill.name,"Cost : ",skill.cost)
-              i += 1 
+              print(str(i) + "-",skill.name,"Cost : ",skill.cost)
+              i += 1
+    
+    def choose_item(self):
+         i=1
+         print(bcolors.OKGREEN +"ITEMS"+bcolors.ENDC)
+         for item in self.items:
+              print(str(i)+ "-",item.name,"description",item.description)
+              i += 1
+    
+         
