@@ -2,10 +2,18 @@ from Classes.game import charClasses,allColors,bcolors
 from Classes.skills import skill
 from Classes.inventory import item
 import  random
+
+#warrior skills
+MightyBlow = skill("Mighty Blow",15,45,"skill")
+SoldierStrike = skill("Soldier Strike",25,random.randrange(50,90),"skill")
+TripleChop = skill("Triple Chop",50,150,"ultimate")
 # Mage Skills 
 Fireball = skill("FireBall",15,45,"spell")
 LightningBolt = skill("LightningBolt",25,random.randrange(50,90),"spell")
-ThunderStorm = skill("ThunderStorm",50,150,"spell")
+ThunderStorm = skill("ThunderStorm",50,150,"ultimate")
+# Archer Skills 
+arcingShot = skill("Arcing Shot",15,45,"skill")
+FocusedShot = skill("Focused Shot",25,random.randrange(50,90),"skill")
 #Healer Skill
 cure = skill("cure",20,70,"Heal") #heal one party member
 cura = skill("cura",50,120,"Heal") #heal 1 party member
@@ -31,7 +39,7 @@ gernade = item("Gernade","attack","Deals 500 Damage",500)
 
 Slime = charClasses(EnemySpells,150,90,40,10,"Slime",0,[])
 Goblin = charClasses(EnemySpells,300,110,60,20,"Goblin",0,[])
-Zombie = charClasses(EnemySpells,500,150,80,30,"Zombie",0,[])
+Zombie = charClasses(EnemySpells,1500,150,80,30,"Zombie",0,[])
 Demon = charClasses(EnemySpells,750,190,110,40,"Demon Soul",0,[])
 Cyclops = charClasses(EnemySpells,5000,500,130,90,"Boss-Cyclops",0,[])
 Phoenix = charClasses(EnemySpells,3000,1000,150,120,"Boss-Phoenix",0,[])
@@ -39,7 +47,11 @@ Phoenix = charClasses(EnemySpells,3000,1000,150,120,"Boss-Phoenix",0,[])
 Monsters = [Slime,Goblin,Zombie,Demon]
 Bosses = [Cyclops,Phoenix]
 
-Player = charClasses(MageSpells,360,80,90,30,"Mage",0,[sMPotion,lPotion,attPotion,elixer])
+PLayer_items =[{"item" : sPotion,"quantity":10},{"item" : lPotion,"quantity":5},
+{"item" : sMPotion,"quantity":10},{"item" : attPotion,"quantity":3},{"item" : elixer,"quantity":5},
+{"item" : gernade,"quantity":1}]
+
+Player = charClasses(MageSpells,360,80,90,30,"Mage",0,PLayer_items)
 
 
 
@@ -49,8 +61,14 @@ one= True
 while one:
     print("===================")
     Player.Choice()
-    choice= input("Please Select:")
-    index = int(choice)-1
+    choice= input(" Select An option:")
+    if choice:
+        index = int(choice)-1
+    else:
+        continue
+    if not index in(0,1,2):
+        print(bcolors.OKBLUE+"please choose a valid option :"+bcolors.ENDC)
+        continue
     print("You Selected ",Player.action[int(choice)-1])
 
     if index == 0:
@@ -86,18 +104,27 @@ while one:
         if item_choice == -1:
             continue 
         item = Player.items[item_choice]
-        if item.type == "hpotion":
-            Player.heal(item.value)
-            print(bcolors.OKGREEN+"You healed For:",item.value)       
-        elif item.type == "apotion":
-            Player.addattack(item.value)
-            print(bcolors.OKGREEN+"in/Max Attack increased By:",item.value/2,item.value)
-        elif item.type == "mpotion":
-            Player.addMana(item.value)  
-            print(bcolors.OKGREEN+"Mana increased By:",item.value)
-        elif item.type =="attack":
-            Zombie.takeDamage(item.value)
-            print("You Delt",item.value," Damage To",Zombie.type)
+        if item["quantity"] > 0:
+            item["quantity"] -= 1
+        else:
+            print(bcolors.FAIL+"You dont have more of this item")
+            continue
+        
+        if item["item"].type == "hpotion":
+            Player.heal(item["item"].value)
+            if item.name == "Elixer":
+                print(bcolors.OKGREEN+"Your HP/MP have been restored")
+            else:
+                print(bcolors.OKGREEN+"You healed For:",item["item"].value,"Your HP:",Player.get_hp())       
+        elif item["item"].type == "apotion":
+            Player.addattack(item["item"].value)
+            print(bcolors.OKGREEN+"in/Max Attack increased By:",item["item"].value/2,item["item"].value)
+        elif item["item"].type == "mpotion":
+            Player.addMana(item["item"].value)  
+            print(bcolors.OKGREEN+"Mana increased By:",item["item"].value)
+        elif item["item"].type =="attack":
+            Zombie.takeDamage(item["item"].value)
+            print("You Delt",item["item"].value," Damage To",Zombie.type)
     
     enemy_choice=1
     enemy_dmg = Zombie.generateRandomDamage()

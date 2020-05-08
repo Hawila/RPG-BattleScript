@@ -72,7 +72,7 @@ class charClasses:
         -----
         list : skills
              cuurent class skills 
-        int : HitPoints
+        int : HitPoints 
              max health points
         int : manaPoints 
              max mana points
@@ -152,7 +152,7 @@ class charClasses:
          i=1
          print(bcolors.OKGREEN +"ITEMS"+bcolors.ENDC)
          for item in self.items:
-              print(str(i)+ "-",item.name,"description",item.description)
+              print(str(i)+ "-",item["item"].name,": ",item["item"].description,"(x" +str(item["quantity"])+")")
               i += 1
     
          
