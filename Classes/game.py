@@ -66,7 +66,7 @@ class charClasses:
     """
     Main character class used to intilize character and enemies type (Mage,warrior,healer or archer)
     """
-    def __init__(self,skills,HitPoints,manaPoints,attackPoints,defPoints,type,crticalHit,items):
+    def __init__(self,name,skills,HitPoints,manaPoints,attackPoints,defPoints,type,crticalHit,items):
         """
         Parameters
         -----
@@ -85,6 +85,7 @@ class charClasses:
         int : crticalHit
              crtical hit percent          
         """
+        self.name = name
         self.skills = skills
         self.maxhp = HitPoints
         self.currentHitPoints = HitPoints
@@ -96,7 +97,7 @@ class charClasses:
         self.defpoints = defPoints
         self.type = type
         self.items=items
-        self.action = ["Action","sKills|Magic","Items"]
+        self.action = ["Normal Attack","sKills|Magic","Items"]
 
     def generateRandomDamage(self):
         return random.randrange(self.lowattack,self.maxattackk)
@@ -136,6 +137,7 @@ class charClasses:
   
     def Choice(self):
          i = 1
+         print(bcolors.OKGREEN+self.name+bcolors.ENDC)
          print(bcolors.OKGREEN +"Actions"+bcolors.ENDC)
          for item in self.action:
               print(i,"-" +item)
@@ -154,5 +156,74 @@ class charClasses:
          for item in self.items:
               print(str(i)+ "-",item["item"].name,": ",item["item"].description,"(x" +str(item["quantity"])+")")
               i += 1
+    def get_enemy_bar(self):
+         health_bar = "" #initial hp bar
+         bar_chunks = (self.currentHitPoints/self.maxhp) * 100 / 2
+         while bar_chunks > 0:
+              health_bar += "█"
+              bar_chunks -= 1 
+         while len(health_bar) < 50:  #length of hp bar below in print (-)counts
+              health_bar += " "
+         health_string =  str(self.currentHitPoints)+"/"+str(self.maxhp) # 4 digit + / + 4 digit = 9 
+         hp=""
+         if len(health_string) < 9:
+              needed_space = 9 -len(health_string)
+
+              while needed_space > 0:
+                   hp += " "
+                   needed_space -= 1
+              hp += health_string     
+         else:
+              hp = health_string
+         print("                     __________________________________________________ ")
+         print(bcolors.BOLD+self.name+"     "+hp+bcolors.FAIL+"|" 
+         +health_bar+"|"+bcolors.ENDC)           
     
-         
+    def get_stat_bar(self):
+         health_bar = "" #initial hp bar
+         bar_chunks = (self.currentHitPoints/self.maxhp) * 100 / 4 # he ASCII block elements come in chunks of 8
+                                                                   
+         mana_bar = ""
+         mana_chunks = (self.currentHitPoints/self.maxhp) * 100 / 10
+
+         while bar_chunks > 0:
+              health_bar += "█"
+              bar_chunks -= 1 
+
+         while mana_chunks > 0:
+              mana_bar += "█"
+              mana_chunks -= 1
+
+         while len(health_bar) < 25:  #length of hp bar below in print (-)counts
+              health_bar += " " 
+
+         while len(mana_bar) < 10:
+              mana_bar += " " 
+
+         health_string =  str(self.currentHitPoints)+"/"+str(self.maxhp) # 4 digit + / + 4 digit = 9 
+         hp=""
+         if len(health_string) < 9:
+              needed_space = 9 -len(health_string)
+
+              while needed_space > 0:
+                   hp += " "
+                   needed_space -= 1
+              hp += health_string     
+         else:
+              hp = health_string
+
+         mana_string =  str(self.currentManaPoints)+"/"+str(self.maxmp)
+         mp=""
+         if len(mana_string) < 7:
+              needed_mspace = 7 -len(mana_string)
+
+              while needed_mspace > 0:
+                   mp += " "
+                   needed_mspace -= 1
+              mp += mana_string     
+         else:
+              mp = mana_string 
+
+         print("                     _________________________             __________ ")
+         print(bcolors.BOLD+self.name+"     "+bcolors.OKGREEN+hp+"|" 
+         +health_bar+"|    "+bcolors.BOLD+mp+"|"+bcolors.OKBLUE+mana_bar+"|"+bcolors.ENDC)          
