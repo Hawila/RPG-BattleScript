@@ -17,7 +17,7 @@ FocusedShot = skill("Focused Shot",25,random.randrange(50,90),"skill")
 #Healer Skill
 cure = skill("cure",20,70,"Heal") #heal one party member
 cura = skill("cura",50,120,"Heal") #heal 1 party member
-Divine = skill("Divine",100,250,"Heal") # heal all party member
+Divine = skill("Divine",100,9999,"Heal") # heal all party member
 #Enemy Skill
 Cursing = skill("Cursing",15,45,"spell")
 Torment = skill("Torment",2,90,"spell")
@@ -52,7 +52,7 @@ PLayer_items =[{"item" : sPotion,"quantity":10},{"item" : lPotion,"quantity":5},
 {"item" : sMPotion,"quantity":10},{"item" : attPotion,"quantity":3},{"item" : elixer,"quantity":5},
 {"item" : gernade,"quantity":1}]
 
-player = charClasses("Hallow",MageSpells,2850,150,90,30,"Mage",0,PLayer_items)
+player  = charClasses("Hallow",MageSpells,2850,150,90,30,"Mage",0,PLayer_items)
 player1 = charClasses("Nargon",warriorSkills,3000,150,90,30,"Warrior",50,PLayer_items)
 player2 = charClasses("Lighto",HealerSpell,2700,150,45,30,"Healer",50,PLayer_items)
 
@@ -100,8 +100,13 @@ while one:
 
             Player.reduce_mana(Player.skills[skill_index].cost)
             if Player.skills[skill_index].type == "Heal":
-                Player.heal(magic_dmg)
-                print(bcolors.OKGREEN+"You healed For:",magic_dmg)
+                heal = Player.skills[skill_index].damage
+                if Player.skills[skill_index].name == "Divine":
+                    for Player in players:
+                        Player.heal(heal)
+                    else:
+                        Player.heal(magic_dmg)
+                        print(bcolors.OKGREEN+"You healed For:",magic_dmg)
             else:
                 Zombie.takeDamage(magic_dmg)
                 print("You Delt",magic_dmg," Damage To",Zombie.type,"with",Player.skills[int(choice)-1].name,"And it cost: ",Player.skills[skill_index].cost,"Your Current Mana: ",Player.get_cmana())
